@@ -17,7 +17,7 @@ from visualize import visualize
 ]), help='Режим работы')
 @click.option('--e', default=20, show_default=True, help='Количество эпох обучения')
 @click.option('--bs', default=256, show_default=True, help='Размер батча')
-@click.option('--ss', default=150, show_default=True, help='Размер стороны изображения')
+@click.option('--ss', default=75, show_default=True, help='Размер стороны изображения')
 @click.option('--path-labels', default='data/labels.txt', help='Путь до файла с названиями классов')
 @click.option('--path-splits', default='data/', help='Путь до CSVшек с выборками train-eval-test')
 @click.option('--path-checkpoint', default='models/', help='Путь до модели (при test), либо место сохранения оной (при train)')
@@ -76,7 +76,7 @@ def run(
         )
 
         model_date = datetime.now().strftime("%y%m%d")
-        model_name = f'{path_checkpoint}_{model_date}-{e}-{bs}-{ss}.pt'
+        model_name = f'{path_checkpoint}{model_date}-{e}-{bs}-{ss}.pt'
 
         torch.save(model, model_name)
         print('Обучение завершено!')

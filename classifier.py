@@ -7,7 +7,8 @@ class SceneClassifier(torch.nn.Module):
     def __init__(self, total_epochs, n_classes):
         super().__init__()
 
-        self.model = tv.models.resnet50().float()
+        # https://docs.pytorch.org/vision/main/models/generated/torchvision.models.efficientnet_v2_s.html
+        self.model = tv.models.efficientnet_v2_s()
         self.model.fc = torch.nn.Linear(in_features=2048, out_features=n_classes, bias=True)
         
         self.criterion = torch.nn.CrossEntropyLoss()
