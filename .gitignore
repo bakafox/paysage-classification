@@ -1,4 +1,6 @@
 **/__pycache__
+*.pyc
+.mypy_cache/*
 
 models/*
 data/*
