@@ -183,11 +183,7 @@
 ## Пример запуска: обучение с параметрами
 
 ```bash
-python3 ./main.py --mode train \        # Режим работы: ОБУЧЕНИЕ
-    --bs 64 --e 20 --ss 64 \            # BatchSize, Epochs, SampleSize
-    --path-labels custom_labels.txt \   # Произвольные метки
-    --path-checkpoint models/new \      # Сохраняем в другой каталог
-    --dataset-splits 05-03-02           # Свои пропорции сплитов
+poetry run python3 ./main.py
 ```
 
 
