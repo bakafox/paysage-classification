@@ -34,7 +34,7 @@ def inference(
 
             probas_with_labels = ', '.join(
                 [
-                    f'{labels_list[i]} - {p*100:.2f}%'
+                    f'{labels_list[i]} - {p * 100:.2f}%'
                     for i, p in enumerate(probas.tolist()[0])
                 ]
             )
