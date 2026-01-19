@@ -3,6 +3,6 @@
 .mypy_cache/*
 
 models/*
-data/*
+# data/*
 !data/labels.txt # Названия классов по умолчанию
 pred/*

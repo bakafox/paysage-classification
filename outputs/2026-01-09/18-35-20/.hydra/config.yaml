@@ -1,0 +1,12 @@
+model: efficientnet
+params:
+  mode: train
+  e: 100
+  bs: 256
+  ss: 32
+  path-labels: data/labels.txt
+  path-splits: data/
+  path-checkpoint: models/
+  path-infers: pred/
+  dataset-name: nitishabharathi/scene-classification
+  dataset-splits: 0.7-0.2-0.1
