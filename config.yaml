@@ -1,8 +1,8 @@
 params:
-  mode: inference # train, test, inference, visualiZe
+  mode: train # train, test, inference, visualiZe
   e: 100
   bs: 256
-  ss: 88
+  ss: 88 # На слабых ПК лучше ставить не более 32
   path-checkpoint: models/260120_100-256-32_10-0.8544.pt
   path-data: data/
   path-infers: pred/15576514498171.jpg

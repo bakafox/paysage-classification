@@ -1,4 +1,6 @@
-.dvc/* # Нет, я не буду пушить приватный ключ на гитхаб
+.dvc/config.local
+.dvc/cache
+.dvc/tmp
 .mypy_cache/*
 **/__pycache__
 

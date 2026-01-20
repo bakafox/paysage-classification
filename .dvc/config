@@ -1,0 +1,6 @@
+[core]
+    remote = myremote
+['remote "myremote"']
+    url = gdrive://1urlcx5hGb5p1lEm6_2oOmbcLgq8ad3tX
+    # client_id и приватный ключ настраивать СТРОГО в config.local!
+    # https://doc.dvc.org/user-guide/data-management/remote-storage/google-drive#using-a-custom-google-cloud-project-recommended

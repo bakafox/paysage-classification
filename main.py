@@ -33,6 +33,7 @@ def model_name_format(path_checkpoint, e, bs, ss, best_epoch, best_acc) -> str:
 @hydra.main(version_base=None, config_path='', config_name='config')
 def run(cfg: DictConfig):
     params = OmegaConf.to_container(cfg['params'])
+    # print(params)
 
     path_dataset = (
         Path(params['path-data']) / 'nitishabharathi/scene-classification/versions/1'
@@ -54,9 +55,7 @@ def run(cfg: DictConfig):
     transform_list = transforms.Compose(
         [
             transforms.ToTensor(),
-            transforms.Resize(
-                [params['ss'], params['ss']]
-            ),  # Ориг. разрешение: [150, 150]
+            transforms.Resize([params['ss'], params['ss']]),  # В датасете: [150, 150]
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ]
     )
@@ -69,11 +68,12 @@ def run(cfg: DictConfig):
             [train_samples, eval_samples] = read_splits(
                 ['train', 'eval'], params['path-data']
             )
+
         except Exception:
             print('Файл сплитов не найден! Создаю новые...')
             create_splits(path_csv, params['dataset-splits'], params['path-data'])
             [train_samples, eval_samples] = read_splits(
-                ['train', 'eval'], params['path-splits']
+                ['train', 'eval'], params['path-data']
             )
 
         model, best_acc, best_epoch = model_train(
@@ -101,11 +101,11 @@ def run(cfg: DictConfig):
     elif params['mode'] == 'test':
         # Загружаем модель и прогоняем на тестовых данных
         try:
-            [test_samples] = read_splits(['test'], params['path-splits'])
+            [test_samples] = read_splits(['test'], params['path-data'])
         except Exception:
             print('Файл сплитов не найден! Создаю новые...')
-            create_splits(path_csv, params['dataset-splits'], params['path-splits'])
-            [test_samples] = read_splits(['test'], params['path-splits'])
+            create_splits(path_csv, params['dataset-splits'], params['path-data'])
+            [test_samples] = read_splits(['test'], params['path-data'])
 
         model = torch.load(params['path-checkpoint'], weights_only=False)
 
@@ -120,7 +120,7 @@ def run(cfg: DictConfig):
 
         visualize(samples, path_images, labels_list, transform_list)
 
-    else:
+    elif params['mode'] == 'inference':
         # В остальных случаях -- просто выполняем инференс
         model = torch.load(params['path-checkpoint'], weights_only=False)
 
@@ -149,6 +149,9 @@ def run(cfg: DictConfig):
 
         else:
             print('Некорректный путь до файла или каталога.')
+
+    else:
+        print('Указанного режима работы не сущестует!')
 
 
 if __name__ == '__main__':
