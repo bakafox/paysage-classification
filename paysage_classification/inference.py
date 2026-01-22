@@ -23,10 +23,18 @@ def inference(
 
     # Вывод в stdout (можно через pipe перенаправить в файл)
     if output == 'std':
-        print(f'\n{path_image}')
-        for i, p in enumerate(probas.tolist()[0]):
-            print(f'{labels_list[i]} -- {p:.20f}')
-        # print()
+        output_str = f'{path_image}\n'
+
+        output_str += '\n'.join(
+            [
+                f'{labels_list[i]} -- {p * 100:.4f}%'
+                for i, p in enumerate(probas.tolist()[0])
+            ]
+        )
+
+        # Выводим И возвращаем строку с результатом
+        print(output_str)
+        return output_str
 
     # Вывод в виде интерактивного окна MatPlotLib, для демки
     else:
@@ -38,7 +46,7 @@ def inference(
 
             probas_with_labels = ', '.join(
                 [
-                    f'{labels_list[i]} - {p * 100:.2f}%'
+                    f'{labels_list[i]} : {p * 100:.2f}%'
                     for i, p in enumerate(probas.tolist()[0])
                 ]
             )

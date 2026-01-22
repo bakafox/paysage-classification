@@ -16,9 +16,7 @@ class ModelWrapper(mlflow.pyfunc.PythonModel):
         self.ss = ss
 
     def load_context(self, context):
-        self.model = torch.load(
-            context.artifacts['model_path'], map_location='cpu', weights_only=False
-        )
+        self.model = torch.load(context.artifacts['model_path'], weights_only=False)
         self.model.eval()
 
         self.transform_list = transforms.Compose(
@@ -39,19 +37,19 @@ class ModelWrapper(mlflow.pyfunc.PythonModel):
             img_path = str(model_input)
 
         try:
-            inference(
+            res = inference(
                 self.model,
                 img_path,
                 self.labels_list,
                 self.transform_list,
                 output='std',  # Захардкожено, т.к. 'mpl' здесь ломает логику
             )
-            result = 10
 
             # Если твоя функция только принтит, придется возвращать кастомную строку
-            if result is None:
+            if res is None:
                 return ['Check server console (inference function returned None)']
-            return [result]
+            return [res]
+
         except Exception as e:
             return [f'Error during inference: {str(e)}']
 
