@@ -8,7 +8,7 @@ from sklearn.decomposition import PCA
 from .dataset.samples import Sample
 from .model.preprocess import SceneDataset
 
-matplotlib.use("TkAgg")
+matplotlib.use('TkAgg')
 
 
 # Перед использованием задать ss не больше 64, иначе крашнется!

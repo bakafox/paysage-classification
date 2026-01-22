@@ -4,7 +4,7 @@ import matplotlib
 
 from .model.preprocess import process_image
 
-matplotlib.use("TkAgg")
+matplotlib.use('TkAgg')
 
 
 def inference(

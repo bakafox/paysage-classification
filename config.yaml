@@ -1,13 +1,13 @@
 params:
-  mode: visualize # train, test, inference, visualize
+  mode: train # train, test, inference, visualize
   e: 100
   bs: 256
   ss: 88 # На слабых ПК лучше ставить не более 32
-  path-models: models/
-  path-checkpoint: 260121_100-256-88_1-0.0000.pt
+  th: 10
+  path-checkpoint: 260121_100-256-88_39-0.9452.pt
   path-data: data/
-  path-infers: 12345.jpeg
-  path-labels: data/labels.txt
+  path-infers: pred/ # Путь к каталогу или картинке
+  path-models: models/
   dataset-size: 397098665
   dataset-splits: 0.7-0.2-0.1 # суммарно д.б. = 1.0
-  infer-output: std # mpl (GUI) либо std (текст)
+  infer-output: mpl # mpl (GUI), либо std (текст)

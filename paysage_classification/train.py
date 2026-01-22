@@ -21,6 +21,7 @@ def model_train(
     epochs: int = 20,
     batch_size: int = 256,
     samples_size: int = 88,
+    max_degradation: int = 10,
 ) -> tuple[SceneClassifier, float, int]:
     # Инициализируем тензорборд
     writer = SummaryWriter()
@@ -40,7 +41,6 @@ def model_train(
     batched_dataset_train = DataLoader(dataset_train, batch_size, shuffle=True)
     batched_dataset_eval = DataLoader(dataset_eval, batch_size, shuffle=True)
 
-    MAX_DEGRADATION_ALLOWED = 10
     best_acc = 0.0
     best_epoch = 0
     best_param = None
@@ -102,7 +102,7 @@ def model_train(
                 best_param = deepcopy(model.state_dict())
 
             # Если больше N эпох точность падает, сворачиваем лавочку
-            elif (epoch - best_epoch) > MAX_DEGRADATION_ALLOWED:
+            elif (epoch - best_epoch) > max_degradation:
                 print('\nМодель безнадёжно деградировала, ехать дальше смысла нет.')
                 writer.flush()
                 break
