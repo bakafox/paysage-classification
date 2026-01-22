@@ -40,7 +40,6 @@ def model_name_format(path_checkpoint, e, bs, ss, best_epoch, best_acc) -> str:
 @hydra.main(version_base=None, config_path='', config_name='config')
 def run(cfg: DictConfig):
     params = OmegaConf.to_container(cfg['params'])
-    # print(f'ВХОДНЫЕ АРГУМЕНТЫ: {params}\n')
 
     path_dataset = (
         Path(params['path-data']) / 'nitishabharathi/scene-classification/versions/1'
@@ -49,7 +48,7 @@ def run(cfg: DictConfig):
     path_csv = path_dataset / 'train-scene classification' / 'train.csv'
 
     # Для начала, скачем датасет! УИИИИИИИИИ
-    if not (
+    if (params['dataset-size'] > 0) and not (
         Path(path_dataset).is_dir()
         and params['dataset-size']
         == sum(f.stat().st_size for f in Path(path_dataset).glob('**/*') if f.is_file())
@@ -63,7 +62,9 @@ def run(cfg: DictConfig):
             exit(-1)
 
     # Считаем входные метки, чтобы не делать этого по многу раз
-    labels_f = open(params['path-labels'], 'r', encoding='utf-8')
+    path_labels = Path(params['path-data']) / 'labels.txt'
+
+    labels_f = open(path_labels, 'r', encoding='utf-8')
     labels_list = list(map(lambda x: x.replace('\n', ''), labels_f.readlines()))
     labels = {label_no: label_name for label_no, label_name in enumerate(labels_list)}
 
@@ -86,6 +87,7 @@ def run(cfg: DictConfig):
             )
         except Exception:
             print('Файл сплитов не найден! Создаю новые...')
+
             create_splits(path_csv, params['dataset-splits'], params['path-data'])
             [train_samples, eval_samples] = read_splits(
                 ['train', 'eval'], params['path-data']
@@ -99,6 +101,8 @@ def run(cfg: DictConfig):
             transform_list,
             params['e'],
             params['bs'],
+            params['ss'],
+            params['th'],
         )
 
         model_name = model_name_format(
@@ -121,6 +125,7 @@ def run(cfg: DictConfig):
             [test_samples] = read_splits(['test'], params['path-data'])
         except Exception:
             print('Файл сплитов не найден! Создаю новые...')
+
             create_splits(path_csv, params['dataset-splits'], params['path-data'])
             [test_samples] = read_splits(['test'], params['path-data'])
 
@@ -136,6 +141,7 @@ def run(cfg: DictConfig):
     elif params['mode'] == 'visualize':
         # В случае с визуализацией, нас сплиты не интересуют
         samples = read_samples(path_csv)
+
         visualize(samples, path_images, labels_list, transform_list)
 
     elif params['mode'] == 'inference':
