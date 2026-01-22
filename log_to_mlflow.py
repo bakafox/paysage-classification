@@ -44,7 +44,7 @@ class ModelWrapper(mlflow.pyfunc.PythonModel):
                 img_path,
                 self.labels_list,
                 self.transform_list,
-                output='std', # Захардкожено, т.к. 'mpl' здесь ломает логику
+                output='std',  # Захардкожено, т.к. 'mpl' здесь ломает логику
             )
             result = 10
 
@@ -76,7 +76,7 @@ def run_mlflow(cfg: DictConfig):
             },
             code_paths=['paysage_classification'],
         )
-        print(f'\nУспех! RUN_ID: {run.info.run_id}\nКоманда для запуска сервера:')
+        print(f'\nУспех! RUN_ID: {run.info.run_id} \nКоманда для запуска сервера:')
         print(
             'poetry run mlflow models serve',
             f'-m runs:/{run.info.run_id}/landscape_server -p 5001 --no-conda',
